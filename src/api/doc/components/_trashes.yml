@@ -1,0 +1,131 @@
+---
+openapi: 3.0.0
+
+tags:
+  - name: Trashes
+    description: Everything about Trashes
+
+paths:
+  /trashes:
+      get:
+        tags:
+          - Trashes
+        summary: Get all Trashes
+        responses:
+            200: 
+              description: return list of all trashes
+      post:
+        tags:
+          - Trashes
+        summary: Add a new trash to the store
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trash'
+              example:
+                trashId: 45$dsazG$qazedd$k
+                location: 14 rue de Mantes - Colombes
+        responses:
+          200:
+            description: return created trash
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Trash'
+          400:
+            $ref: '#/components/responses/BadRequest'
+  /trashes/{id}:
+      get:
+        tags:
+          - Trashes
+        summary: Get a trash with a id
+        parameters:
+          - name: id
+            in: path
+            description: Trash ID
+            required: true
+            schema:
+              type: string
+        responses:
+          200:
+            description: Return a trash
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Trash'
+                example:
+                  id: z78s898785575suudhq578s5qs4
+                  trashId: 45$dsazG$qazedd$k
+                  location: 14 rue de Mantes - Colombes
+          404:
+            $ref: "#/components/responses/NotFound"
+      put:
+        tags:
+          - Trashes
+        summary: Update an existing trash
+        parameters:
+          - name: id
+            in: path
+            description: Trash ID
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trash'
+              example:
+                trashId: 45$dsazG$qazedd$k
+                location: 14 rue de Mantes - Colombes
+        responses:
+          200:
+            description: Return updated trash
+            content:
+              application/json:
+                schema:
+                 $ref: '#/components/schemas/Trash'
+          400:
+            $ref: '#/components/responses/BadRequest'
+          401:
+            $ref: '#/components/responses/Unauthorized'
+          404:
+            $ref: "#/components/responses/NotFound"
+      delete:
+        tags:
+          - Trashes
+        summary: Delete an existing trash
+        parameters:
+          - name: id
+            in: path
+            description: trash ID
+            required: true
+            schema:
+              type: string
+        responses:
+          200:
+            description: Success
+          401:
+            $ref: '#/components/responses/Unauthorized'
+          400:
+            $ref: '#/components/responses/BadRequest'
+          404:
+            $ref: "#/components/responses/NotFound"
+
+components:
+  schemas:
+    Trash:
+      type: object
+      properties:
+        id:
+          type: string
+        trashId:
+          type: string
+        location:
+          type: string
+      required:
+        - id
+        - trashId
+        - location

@@ -1,0 +1,36 @@
+{
+    "name": "nodejs-server-model",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@koa/cors": "^2.2.3",
+        "bcrypt": "^3.0.4",
+        "dotenv": "^6.2.0",
+        "joi": "^14.3.1",
+        "jsonwebtoken": "^8.3.0",
+        "koa": "^2.6.1",
+        "koa-body": "^4.0.4",
+        "koa-respond": "^2.1.0",
+        "koa-router": "^7.4.0",
+        "mongoose": "^5.3.6",
+        "swagger2-koa": "^1.0.3"
+    },
+    "scripts": {
+        "start": "set NODE_ENV=DEV&&nodemon  --watch src ./src/server.js",
+        "start-prod": "set NODE_ENV=PROD&&nodemon  --watch src ./src/server.js",
+        "lint": "eslint . --ext js --ignore-pattern node_modules/",
+        "test-serve": "set NODE_ENV=TEST&&nodemon --watch src ./src/server.js",
+        "test": "set NODE_ENV=TEST&&mocha"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "chai-http": "^4.2.1",
+        "eslint": "^5.15.1",
+        "js-yaml": "^3.12.1",
+        "minimist": "^1.2.0",
+        "mocha": "^6.0.2",
+        "nodemon": "^1.17.2",
+        "pluralize": "^7.0.0",
+        "replace": "^1.0.1"
+    }
+}
