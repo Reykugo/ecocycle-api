@@ -1,0 +1,76 @@
+---
+openapi: 3.0.0
+
+tags:
+  - name: Authentication
+    description: Everything about Authentication
+
+paths:
+  /auth:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authentication'
+            example:
+              email: JohnDoe@gmail.com
+              password: "password"
+      responses:
+        200:
+          description: return jwt Bearer token
+          content:
+            application/json:
+              example:
+                token: a token contain payload {id, email, admin} of user
+              
+        400:
+          $ref: '#/components/responses/BadRequest'
+  /auth/trash:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authentication'
+            example:
+              trashId: "456768s946d55"
+              authKey: "F$az568d77Gdsq$aze"
+      responses:
+        200:
+          description: return jwt Bearer token
+          content:
+            application/json:
+              example:
+                token: a token contain payload {id} of trash 
+              
+        400:
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    Authentication:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - id
+        - password
+    AuthenticationTrash:
+      type: object
+      properties:
+        trashId:
+          type: string
+        authKey:
+          type: string
+
+      
+    

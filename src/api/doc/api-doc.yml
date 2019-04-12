@@ -1,0 +1,470 @@
+openapi: 3.0.0
+info:
+  description: This is a sample server model based on koa with JWT authentication.
+  version: 1.0.0
+  title: NODE API REST MODEL
+  contact:
+    email: youremail@email.com
+servers:
+  - url: 'http://localhost:8080/api'
+    description: Server model
+tags:
+  - name: Authentication
+    description: Everything about Authentication
+  - name: Qr-codes
+    description: Everything about Qr-codes
+  - name: Trashes
+    description: Everything about Trashes
+  - name: Users
+    description: Everything about Users
+paths:
+  /auth:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authentication'
+            example:
+              email: JohnDoe@gmail.com
+              password: password
+      responses:
+        '200':
+          description: return jwt Bearer token
+          content:
+            application/json:
+              example:
+                token: 'a token contain payload {id, email, admin} of user'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /auth/trash:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authentication'
+            example:
+              trashId: 456768s946d55
+              authKey: F$az568d77Gdsq$aze
+      responses:
+        '200':
+          description: return jwt Bearer token
+          content:
+            application/json:
+              example:
+                token: 'a token contain payload {id} of trash'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /qr-codes:
+    post:
+      tags:
+        - Qr-codes
+      summary: Add a new qr-code to the store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Qr-code'
+      responses:
+        '200':
+          description: return created qr-code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Qr-code'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/qr-codes/{id}':
+    post:
+      tags:
+        - Qr-codes
+      summary: Add qrCode point to user
+      description: Check qrCode validity and set point to a user
+      parameters:
+        - name: id
+          in: path
+          description: Qr-code ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Qr-code'
+            example:
+              userId: d487ds5sq3s5d448d45s
+      responses:
+        '200':
+          description: Success
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /trashes:
+    get:
+      tags:
+        - Trashes
+      summary: Get all Trashes
+      responses:
+        '200':
+          description: return list of all trashes
+    post:
+      tags:
+        - Trashes
+      summary: Add a new trash to the store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trash'
+            example:
+              trashId: 45$dsazG$qazedd$k
+              location: 14 rue de Mantes - Colombes
+      responses:
+        '200':
+          description: return created trash
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trash'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/trashes/{id}':
+    get:
+      tags:
+        - Trashes
+      summary: Get a trash with a id
+      parameters:
+        - name: id
+          in: path
+          description: Trash ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Return a trash
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trash'
+              example:
+                id: z78s898785575suudhq578s5qs4
+                trashId: 45$dsazG$qazedd$k
+                location: 14 rue de Mantes - Colombes
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Trashes
+      summary: Update an existing trash
+      parameters:
+        - name: id
+          in: path
+          description: Trash ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trash'
+            example:
+              trashId: 45$dsazG$qazedd$k
+              location: 14 rue de Mantes - Colombes
+      responses:
+        '200':
+          description: Return updated trash
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trash'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Trashes
+      summary: Delete an existing trash
+      parameters:
+        - name: id
+          in: path
+          description: trash ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get all Users
+      responses:
+        '200':
+          description: return list of all users
+    post:
+      tags:
+        - Users
+      summary: Add a new user to the store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              id: 789aze1de4dsqd4s5d7s5
+              firstname: John
+              lastname: doe
+              username: DODO
+              password: password124
+              email: john.doe@gmail.com
+              location: 33 rue de la Garre
+      responses:
+        '200':
+          description: return created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: 789aze1de4dsqd4s5d7s5
+                firstname: John
+                lastname: doe
+                username: DODO
+                email: john.doe@gmail.com
+                location: 33 rue de la Garre
+                reductions:
+                  - null
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/users/{id}':
+    get:
+      tags:
+        - Users
+      summary: Get a user with a id
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Return a user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: 789aze1de4dsqd4s5d7s5
+                firstname: John
+                lastname: doe
+                username: DODO
+                email: john.doe@gmail.com
+                location: 33 rue de la Garre
+                reductions:
+                  - bonobo
+                  - H&m
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Users
+      summary: Update an existing user
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              location: 22 rue des peupliers
+      responses:
+        '200':
+          description: Return updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: 789aze1de4dsqd4s5d7s5
+                firstname: John
+                lastname: doe
+                username: DODO
+                email: john.doe@gmail.com
+                location: 33 rue de la Garre
+                reductions:
+                  - bonobo
+                  - H&m
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Users
+      summary: Delete an existing user
+      parameters:
+        - name: id
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+            required:
+              - error
+            example:
+              error: NotFound
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+            required:
+              - error
+            example:
+              error: BadRequest
+    Unauthorized:
+      description: Authorization information is missing or invalid.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+            required:
+              - message
+            example:
+              error: PermissionDenied
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Authentication:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - id
+        - password
+    AuthenticationTrash:
+      type: object
+      properties:
+        trashId:
+          type: string
+        authKey:
+          type: string
+    Qr-code:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+        - id
+    Trash:
+      type: object
+      properties:
+        id:
+          type: string
+        trashId:
+          type: string
+        location:
+          type: string
+      required:
+        - id
+        - trashId
+        - location
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        admin:
+          type: string
+        location:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        reductions:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - email
+        - admin
+        - firstname
+        - lastname
+        - password
+        - username

@@ -1,0 +1,179 @@
+---
+openapi: 3.0.0
+
+tags:
+  - name: Users
+    description: Everything about Users
+
+paths:
+  /users:
+      get:
+        tags:
+          - Users
+        summary: Get all Users
+        responses:
+            200: 
+              description: return list of all users
+      post:
+        tags:
+          - Users
+        summary: Add a new user to the store
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: 789aze1de4dsqd4s5d7s5
+                firstname: John
+                lastname: doe
+                username: DODO
+                password: password124
+                email: john.doe@gmail.com
+                location: 33 rue de la Garre
+        responses:
+          200:
+            description: return created user
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+                example:
+                  id: 789aze1de4dsqd4s5d7s5
+                  firstname: John
+                  lastname: doe
+                  username: DODO
+                  email: john.doe@gmail.com
+                  location: 33 rue de la Garre
+                  reductions:
+                    - 
+          400:
+            $ref: '#/components/responses/BadRequest'
+  /users/{id}:
+      get:
+        tags:
+          - Users
+        summary: Get a user with a id
+        parameters:
+          - name: id
+            in: path
+            description: User ID
+            required: true
+            schema:
+              type: string
+        responses:
+          200:
+            description: Return a user
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+                example:
+                  id: 789aze1de4dsqd4s5d7s5
+                  firstname: John
+                  lastname: doe
+                  username: DODO
+                  email: john.doe@gmail.com
+                  location: 33 rue de la Garre
+                  reductions:
+                    - bonobo
+                    - H&m
+                  
+          404:
+            $ref: "#/components/responses/NotFound"
+      put:
+        tags:
+          - Users
+        summary: Update an existing user
+        parameters:
+          - name: id
+            in: path
+            description: User ID
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                location: 22 rue des peupliers
+        responses:
+          200:
+            description: Return updated user
+            content:
+              application/json:
+                schema:
+                 $ref: '#/components/schemas/User'
+                example:
+                  id: 789aze1de4dsqd4s5d7s5
+                  firstname: John
+                  lastname: doe
+                  username: DODO
+                  email: john.doe@gmail.com
+                  location: 33 rue de la Garre
+                  reductions:
+                    - bonobo
+                    - H&m
+          400:
+            $ref: '#/components/responses/BadRequest'
+          401:
+            $ref: '#/components/responses/Unauthorized'
+          404:
+            $ref: "#/components/responses/NotFound"
+      delete:
+        tags:
+          - Users
+        summary: Delete an existing user
+        parameters:
+          - name: id
+            in: path
+            description: user ID
+            required: true
+            schema:
+              type: string
+        responses:
+          200:
+            description: Success
+          401:
+            $ref: '#/components/responses/Unauthorized'
+          400:
+            $ref: '#/components/responses/BadRequest'
+          404:
+            $ref: "#/components/responses/NotFound"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        admin:
+          type: string
+        location:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        reductions:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - email
+        - admin
+        - firstname
+        - lastname
+        - password
+        - username

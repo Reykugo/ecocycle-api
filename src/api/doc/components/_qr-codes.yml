@@ -1,0 +1,65 @@
+---
+openapi: 3.0.0
+
+tags:
+  - name: Qr-codes
+    description: Everything about Qr-codes
+
+paths:
+  /qr-codes:
+      post:
+        tags:
+          - Qr-codes
+        summary: Add a new qr-code to the store
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Qr-code'
+        responses:
+          200:
+            description: return created qr-code
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Qr-code'
+          400:
+            $ref: '#/components/responses/BadRequest'
+  /qr-codes/{id}:
+      post:
+        tags:
+          - Qr-codes
+        summary: Add qrCode point to user
+        description: Check qrCode validity and set point to a user
+        parameters:
+          - name: id
+            in: path
+            description: Qr-code ID
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Qr-code'
+              example:
+                userId: d487ds5sq3s5d448d45s
+        responses:
+          200:
+            description: Success
+          400:
+            $ref: '#/components/schemas/BadRequest'
+          404:
+            $ref: "#/components/responses/NotFound"
+components:
+  schemas:
+    Qr-code:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+        - id    
